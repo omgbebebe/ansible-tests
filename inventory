@@ -1,0 +1,5 @@
+[nginx]
+nginx_[1:2]
+
+[postgres]
+postgres_1
