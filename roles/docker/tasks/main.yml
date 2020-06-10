@@ -1,4 +1,10 @@
 ---
+- name: add docker repository
+  command:
+    cmd: dnf config-manager --add-repo=https://download.docker.com/linux/centos/docker-ce.repo
+    creates: /etc/yum.repos.d/docker-ce.repo
+  when: ansible_distribution == "CentOS"
+
 - name: install docker package
   package:
     name: "{{item}}"

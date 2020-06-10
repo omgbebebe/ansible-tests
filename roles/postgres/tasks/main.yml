@@ -9,6 +9,16 @@
   - postgres
   notify: postgres started
 
+- name: check if pgdata exist
+  stat:
+    path: "/var/lib/pgsql/data"
+  register: pgdata
+  when: ansible_distribution == "CentOS"
+
+- name: initialize posgtres
+  command: /usr/bin/postgresql-setup --initdb
+  when: ansible_distribution == "CentOS" and (not pgdata.stat.exists)
+
 - name: restore demo database
   include_tasks:
     file: restore.yml

@@ -3,7 +3,7 @@ postgres:
   dump_name: "demo-small.dump"
   backup_path: "/tmp"
   user:
-    Centos: "postgres"
+    CentOS: "postgres"
     Ubuntu: "postgres"
 
 nginx:
@@ -27,18 +27,17 @@ users:
 
 packages:
   postgresql:
-    Centos:
-    - postgresql
-    - python-psycopg2
+    CentOS:
+    - postgresql-server
+    - python3-psycopg2
     Ubuntu:
     - postgresql
     - python-psycopg2
 
   docker:
-    Centos:
-    - docker
-    - python-docker
-    - python-pip
+    CentOS:
+    - docker-ce-3:18.09.1-3.el7
+    - python3-pip
     Ubuntu:
     - docker.io
     - python-docker
@@ -47,10 +46,10 @@ packages:
 services:
   postgresql:
     Ubuntu: "postgresql"
-    Centos: "postgres"
+    CentOS: "postgresql"
   docker:
     Ubuntu: "docker"
-    Centos: "docker"
+    CentOS: "docker"
   nginx:
     Ubuntu: "nginx"
-    Centos: "nginx"
+    CentOS: "nginx"
