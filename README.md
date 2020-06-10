@@ -17,3 +17,9 @@ vagrant ssh-config > ssh_config
 ```
 ansible all -i inventory -m ping
 ```
+
+# Deploy environment
+
+```
+ansible-playbook -i inventory deploy.yml
+```
