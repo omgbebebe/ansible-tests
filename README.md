@@ -21,5 +21,5 @@ ansible all -i inventory -m ping
 # Deploy environment
 
 ```
-ansible-playbook -i inventory deploy.yml
+ansible-playbook -i inventory deploy.yml -e env_name=dev
 ```
