@@ -1,0 +1,29 @@
+events {
+  worker_connections  4096;  ## Default: 1024
+}
+
+http {
+  default_type  application/octet-stream;
+
+  server {
+    listen 80;
+    server_name {{env_name}}-{{env.nginx.server_name}};
+    location / {
+      return 200 'Hello $host';
+    }
+  }
+  
+{% for vhost in env.nginx.vhosts %}
+  server {
+    listen 80;
+  
+    server_name {{vhost}}.{{env_name}}-{{env.nginx.server_name}};
+  
+    root /usr/share/nginx/content/{{vhost}};
+  
+    location / {
+      try_files /index.html =404;
+    }
+  }
+{% endfor %}
+}

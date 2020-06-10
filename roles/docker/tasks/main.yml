@@ -1,0 +1,15 @@
+---
+- name: install docker package
+  package:
+    name: "{{item}}"
+    state: latest
+  loop: "{{env.packages.docker[ansible_distribution]}}"
+  notify: docker started
+  tags:
+  - packages
+  - docker
+
+- name: install python docker SDK via pip
+  pip:
+    name: "docker-py"
+    state: present

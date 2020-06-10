@@ -1,30 +1,42 @@
 ---
-- name: install docker package
-  package:
-    name: "{{item}}"
-    state: latest
-  loop:
-  - "{{env.packages.docker[ansible_distribution]}}"
-  - "{{env.packages.pip[ansible_distribution]}}"
-  tags:
-  - packages
-  - docker
+- name: create nginx data directory
+  file:
+    path: "/srv/data/nginx/"
+    state: directory
+    mode: 0750
 
-- name: install docker python SDK
-  pip:
-    name: "{{env.packages.python_docker[ansible_distribution]}}"
-  tags:
-  - packages
-  - docker
+- name: generate nginx.conf
+  template:
+    src: "nginx.conf.j2"
+    dest: "{{env.nginx.data_path}}/nginx.conf"
+  notify: nginx reload
+
+- name: create content directory for each vhost
+  file:
+    path: "{{env.nginx.data_path}}/content/{{item}}"
+    state: directory
+  loop: "{{env.nginx.vhosts}}"
+
+- name: generate virtual hosts content
+  template:
+    src: "index.html.j2"
+    dest: "{{env.nginx.data_path}}/content/{{item}}/index.html"
+  loop: "{{env.nginx.vhosts}}"
+  notify: nginx reload
 
 - name: prepare Nginx container
   docker_container:
     name: nginx
     image: nginx
-    state: present
+    state: started
     exposed_ports:
     - "80"
-    - "443"
+    published_ports:
+    - "80:80"
+    volumes:
+    - "/srv/data/nginx/nginx.conf:/etc/nginx/nginx.conf:ro"
+    - "/srv/data/nginx/content:/usr/share/nginx/content:ro"
+
   tags:
   - nginx
   - containers

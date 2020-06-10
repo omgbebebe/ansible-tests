@@ -1,0 +1,5 @@
+---
+- name: postgres started
+  service:
+    name: "{{env.services.postgresql[ansible_distribution]}}"
+    state: started

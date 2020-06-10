@@ -1,0 +1,23 @@
+---
+- name: fetch dump from host
+  copy:
+    src: "{{env.postgres.dump_name}}"
+    dest: "{{env.postgres.backup_path}}/demo.dump"
+
+- name: ensure that the demo database exist
+  postgresql_db:
+    name: "demo"
+    state: present
+  become_user: "{{env.postgres.user[ansible_distribution]}}"
+
+- name: restore postgres database
+  postgresql_db:
+    name: "demo"
+    state: "restore"
+    target: "{{env.postgres.backup_path}}/demo.dump"
+  become_user: "{{env.postgres.user[ansible_distribution]}}"
+
+- name: purge dump file
+  file:
+    name: "{{env.postgres.backup_path}}/demo.dump"
+    state: absent

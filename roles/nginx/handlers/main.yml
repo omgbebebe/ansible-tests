@@ -1,0 +1,3 @@
+---
+- name: nginx reload
+  command: docker kill --signal=HUP nginx

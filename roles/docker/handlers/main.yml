@@ -1,0 +1,6 @@
+---
+- name: docker started
+  service:
+    name: "{{env.services.docker[ansible_distribution]}}"
+    status: started
+

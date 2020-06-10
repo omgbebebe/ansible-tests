@@ -1,8 +1,20 @@
 ---
 - name: install PostgreSQL package
   package:
-    name: "{{env.packages.postgresql[ansible_distribution]}}"
+    name: "{{item}}"
     state: latest
+  loop: "{{env.packages.postgresql[ansible_distribution]}}"
   tags:
   - packages
   - postgres
+  notify: postgres started
+
+- name: restore demo database
+  include_tasks:
+    file: restore.yml
+    apply:
+      tags:
+      - restore_database
+  tags:
+  - never
+  - restore_database

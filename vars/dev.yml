@@ -1,4 +1,19 @@
 ---
+postgres:
+  dump_name: "demo-small.dump"
+  backup_path: "/tmp"
+  user:
+    Centos: "postgres"
+    Ubuntu: "postgres"
+
+nginx:
+  server_name: demo.example.com
+  data_path: "/srv/data/nginx"
+  vhosts:
+  - foo
+  - bar
+  - baz
+
 users:
 - name: fred
   ssh_key: "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAICn2jLmrDKYwt1zouEjyAwdItBJ2A2MyULwLr1IbF5rz"
@@ -12,14 +27,30 @@ users:
 
 packages:
   postgresql:
-    Centos: "postgres-server"
-    Ubuntu: "postgresql"
+    Centos:
+    - postgresql
+    - python-psycopg2
+    Ubuntu:
+    - postgresql
+    - python-psycopg2
+
   docker:
+    Centos:
+    - docker
+    - python-docker
+    - python-pip
+    Ubuntu:
+    - docker.io
+    - python-docker
+    - python-pip
+
+services:
+  postgresql:
+    Ubuntu: "postgresql"
+    Centos: "postgres"
+  docker:
+    Ubuntu: "docker"
     Centos: "docker"
-    Ubuntu: "docker.io"
-  pip:
-    Centos: "pip"
-    Ubuntu: "python-pip"
-  python_docker:
-    Centos: "docker-py"
-    Ubuntu: "docker-py"
+  nginx:
+    Ubuntu: "nginx"
+    Centos: "nginx"
