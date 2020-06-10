@@ -1,0 +1,55 @@
+---
+postgres:
+  dump_name: "demo-medium.dump"
+  backup_path: "/tmp"
+  user:
+    CentOS: "postgres"
+    Ubuntu: "postgres"
+
+nginx:
+  server_name: demo.example.com
+  data_path: "/srv/data/nginx"
+  vhosts:
+  - foo
+  - bar
+  - baz
+
+users:
+- name: fred
+  ssh_key: "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAICn2jLmrDKYwt1zouEjyAwdItBJ2A2MyULwLr1IbF5rz"
+  state: present
+- name: mark
+  ssh_key: "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBQh0DIHOIs4ZBok6F8I2JmZGcdu6NPS8R7cY5ndQaID"
+  state: present
+- name: adam
+  ssh_key: "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPY89d+z8ZjNPuqNUJ/Ny3X4PxDGz1LAWzSeMWBD1iwG"
+  state: present
+
+packages:
+  postgresql:
+    CentOS:
+    - postgresql-server
+    - python3-psycopg2
+    Ubuntu:
+    - postgresql
+    - python-psycopg2
+
+  docker:
+    CentOS:
+    - docker-ce-3:18.09.1-3.el7
+    - python3-pip
+    Ubuntu:
+    - docker.io
+    - python-docker
+    - python-pip
+
+services:
+  postgresql:
+    Ubuntu: "postgresql"
+    CentOS: "postgresql"
+  docker:
+    Ubuntu: "docker"
+    CentOS: "docker"
+  nginx:
+    Ubuntu: "nginx"
+    CentOS: "nginx"
