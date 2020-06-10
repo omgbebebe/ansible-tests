@@ -1,8 +1,20 @@
 ---
+- name: check input parameters
+  hosts: localhost
+  gather_facts: false
+  tags: always
+  tasks:
+  - fail: msg="env_name should be set"
+    when: env_name is not defined
+
 - hosts: postgres
+  become: true
   roles:
+  - common
   - postgres
 
 - hosts: nginx
+  become: true
   roles:
+  - common
   - nginx

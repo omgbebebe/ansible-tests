@@ -1,0 +1,21 @@
+---
+- name: read environment variables
+  include_vars:
+    file: "{{env_name}}.yml"
+    name: "env"
+  tags: always
+
+- name: update users
+  user:
+    name: "{{item.name}}"
+    state: "{{item.state}}"
+  loop: "{{ env.users }}"
+  tags: users
+
+- name: update authorized keys
+  authorized_key:
+    user: "{{item.name}}"
+    state: present
+    key: "{{item.ssh_key}}"
+  loop: "{{ env.users }}"
+  tags: users

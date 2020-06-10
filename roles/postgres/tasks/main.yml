@@ -1,0 +1,8 @@
+---
+- name: install PostgreSQL package
+  package:
+    name: "{{env.packages.postgresql[ansible_distribution]}}"
+    state: latest
+  tags:
+  - packages
+  - postgres

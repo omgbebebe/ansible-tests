@@ -1,0 +1,30 @@
+---
+- name: install docker package
+  package:
+    name: "{{item}}"
+    state: latest
+  loop:
+  - "{{env.packages.docker[ansible_distribution]}}"
+  - "{{env.packages.pip[ansible_distribution]}}"
+  tags:
+  - packages
+  - docker
+
+- name: install docker python SDK
+  pip:
+    name: "{{env.packages.python_docker[ansible_distribution]}}"
+  tags:
+  - packages
+  - docker
+
+- name: prepare Nginx container
+  docker_container:
+    name: nginx
+    image: nginx
+    state: present
+    exposed_ports:
+    - "80"
+    - "443"
+  tags:
+  - nginx
+  - containers
